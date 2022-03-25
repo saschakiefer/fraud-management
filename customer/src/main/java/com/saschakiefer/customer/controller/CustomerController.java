@@ -4,21 +4,21 @@ import com.saschakiefer.customer.CustomerRegistrationRequest;
 import com.saschakiefer.customer.services.ICustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/customers")
+@RequestMapping(CustomerController.PATH)
 public class CustomerController {
+    public static final String PATH = "/api/v1/customers";
 
     @Autowired
     ICustomerService customerService;
 
     @PostMapping
-    public void registerCustomer(@RequestBody CustomerRegistrationRequest customerRequest){
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerCustomer(@RequestBody CustomerRegistrationRequest customerRequest) {
         log.info("new customer registration {}", customerRequest);
         customerService.registerCustomer(customerRequest);
     }
