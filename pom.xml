@@ -6,7 +6,11 @@
 
   <groupId>com.saschakiefer</groupId>
   <artifactId>fraud-management</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
+  <modules>
+    <module>customer</module>
+  </modules>
 
   <name>fraud-management</name>
   <url>https://www.sascha-kiefer.de</url>
