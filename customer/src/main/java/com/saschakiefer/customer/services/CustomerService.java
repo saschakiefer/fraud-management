@@ -1,5 +1,7 @@
 package com.saschakiefer.customer.services;
 
+import com.saschakiefer.clients.fraud.FraudCheckResponse;
+import com.saschakiefer.clients.fraud.IFraudClient;
 import com.saschakiefer.customer.controllers.CustomerRegistrationRequest;
 import com.saschakiefer.customer.models.Customer;
 import com.saschakiefer.customer.repositories.ICustomerRepository;
@@ -15,6 +17,9 @@ public class CustomerService implements ICustomerService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private IFraudClient fraudClient;
+
     @Override
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
@@ -28,10 +33,12 @@ public class CustomerService implements ICustomerService {
 
         customerRepository.saveAndFlush(customer);
 
-        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
-                "http://FRAUD/api/v1/fraud-check/{customerId}",
-                FraudCheckResponse.class,
-                customer.getId());
+//        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
+//                "http://FRAUD/api/v1/fraud-check/{customerId}",
+//                FraudCheckResponse.class,
+//                customer.getId());
+
+        FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
 
         if (fraudCheckResponse.isFraudster()) {
             throw new IllegalStateException("fraudster");

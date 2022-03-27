@@ -1,5 +1,6 @@
 package com.saschakiefer.fraud.controllers;
 
+import com.saschakiefer.clients.fraud.FraudCheckResponse;
 import com.saschakiefer.fraud.services.IFraudCheckService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
