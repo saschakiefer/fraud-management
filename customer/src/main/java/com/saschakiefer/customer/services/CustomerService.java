@@ -5,11 +5,15 @@ import com.saschakiefer.customer.models.Customer;
 import com.saschakiefer.customer.repositories.ICustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class CustomerService implements ICustomerService {
     @Autowired
     private ICustomerRepository customerRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
     public void registerCustomer(CustomerRegistrationRequest request) {
@@ -19,6 +23,18 @@ public class CustomerService implements ICustomerService {
                 .email(request.email())
                 .build();
 
-        customerRepository.save(customer);
+        // TODO: Check valid email
+        // TODO: Check unique eMail
+
+        customerRepository.saveAndFlush(customer);
+
+        FraudCheckResponse fraudCheckResponse = restTemplate.getForObject(
+                "http://localhost:8081/api/v1/fraud-check/{customerId}",
+                FraudCheckResponse.class,
+                customer.getId());
+
+        if (fraudCheckResponse.isFraudster()) {
+            throw new IllegalStateException("fraudster");
+        }
     }
 }
