@@ -1,7 +1,7 @@
 package com.saschakiefer.customer.services;
 
-import com.saschakiefer.customer.CustomerRegistrationRequest;
-import com.saschakiefer.customer.model.Customer;
+import com.saschakiefer.customer.controllers.CustomerRegistrationRequest;
+import com.saschakiefer.customer.models.Customer;
 import com.saschakiefer.customer.repositories.ICustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

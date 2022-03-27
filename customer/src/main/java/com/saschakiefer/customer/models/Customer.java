@@ -1,4 +1,4 @@
-package com.saschakiefer.customer.model;
+package com.saschakiefer.customer.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

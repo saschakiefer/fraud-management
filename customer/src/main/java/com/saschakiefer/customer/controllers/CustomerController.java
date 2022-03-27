@@ -1,6 +1,5 @@
-package com.saschakiefer.customer.controller;
+package com.saschakiefer.customer.controllers;
 
-import com.saschakiefer.customer.CustomerRegistrationRequest;
 import com.saschakiefer.customer.services.ICustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

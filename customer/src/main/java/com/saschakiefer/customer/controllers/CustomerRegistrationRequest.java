@@ -1,4 +1,4 @@
-package com.saschakiefer.customer;
+package com.saschakiefer.customer.controllers;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 

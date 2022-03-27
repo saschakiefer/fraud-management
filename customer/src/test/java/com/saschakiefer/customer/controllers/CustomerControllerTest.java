@@ -1,7 +1,6 @@
-package com.saschakiefer.customer.controller;
+package com.saschakiefer.customer.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.saschakiefer.customer.CustomerRegistrationRequest;
 import com.saschakiefer.customer.services.ICustomerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
