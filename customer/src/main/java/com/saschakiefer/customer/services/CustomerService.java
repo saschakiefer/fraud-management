@@ -1,15 +1,14 @@
 package com.saschakiefer.customer.services;
 
+import com.saschakiefer.amqp.RabbitMqMessageProducer;
 import com.saschakiefer.clients.fraud.FraudCheckResponse;
 import com.saschakiefer.clients.fraud.IFraudClient;
-import com.saschakiefer.clients.notification.INotificationClient;
 import com.saschakiefer.clients.notification.NotificationRequest;
 import com.saschakiefer.customer.controllers.CustomerRegistrationRequest;
 import com.saschakiefer.customer.models.Customer;
 import com.saschakiefer.customer.repositories.ICustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @AllArgsConstructor
@@ -17,10 +16,12 @@ public class CustomerService implements ICustomerService {
 
     private ICustomerRepository customerRepository;
 
-    private RestTemplate restTemplate;
+//    private RestTemplate restTemplate;
 
     private IFraudClient fraudClient;
-    private INotificationClient notificationClient;
+//    private INotificationClient notificationClient;
+
+    private final RabbitMqMessageProducer rabbitMqMessageProducer;
 
     @Override
     public void registerCustomer(CustomerRegistrationRequest request) {
@@ -46,9 +47,16 @@ public class CustomerService implements ICustomerService {
             throw new IllegalStateException("fraudster");
         }
 
-        notificationClient.sendNotification(new NotificationRequest(
+        NotificationRequest notificationRequest = new NotificationRequest(
                 customer.getId(),
                 customer.getEmail(),
-                String.format("Hi %s, welcome to Kiefer Inc...", customer.getFirstName())));
+                String.format("Hi %s, welcome to Kiefer Inc...", customer.getFirstName()));
+
+//        notificationClient.sendNotification(notificationRequest);
+
+        rabbitMqMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key");
     }
 }
