@@ -48,34 +48,36 @@ services:
     networks:
       - spring
 
-  eureka-server:
-    image: saschakiefer/fraud-management-eureka-server:latest
-    container_name: eureka-server
-    ports:
-      - "8761:8761"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
-
-  apigw:
-    image: saschakiefer/fraud-management-apigw:latest
-    container_name: apigw
-    ports:
-      - "8083:8083"
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-    networks:
-      - spring
-    depends_on:
-      - zipkin
-      - eureka-server
+  #  eureka-server:
+  #    image: saschakiefer/fraud-management-eureka-server:latest
+  #    container_name: eureka-server
+  #    ports:
+  #      - "8761:8761"
+  #    environment:
+  #      - SPRING_PROFILES_ACTIVE=docker
+  #    networks:
+  #      - spring
+  #    depends_on:
+  #      - zipkin
+  #
+  #  apigw:
+  #    image: saschakiefer/fraud-management-apigw:latest
+  #    container_name: apigw
+  #    ports:
+  #      - "8083:8083"
+  #    environment:
+  #      - SPRING_PROFILES_ACTIVE=docker
+  #    networks:
+  #      - spring
+  #    depends_on:
+  #      - zipkin
+  #      - eureka-server
 
   customer:
     image: saschakiefer/fraud-management-customer:latest
     container_name: customer
+    ports:
+      - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
@@ -83,7 +85,6 @@ services:
       - postgres
     depends_on:
       - zipkin
-      - eureka-server
       - rabbitmq
       - postgres
 
@@ -97,7 +98,6 @@ services:
       - postgres
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
 
   notification:
@@ -110,7 +110,6 @@ services:
       - postgres
     depends_on:
       - zipkin
-      - eureka-server
       - postgres
       - rabbitmq
 
